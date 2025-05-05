@@ -128,5 +128,3 @@ function renderProductsHtml () {
         })
 }
 
-localStorage.clear('cart');
-
