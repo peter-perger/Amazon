@@ -30,15 +30,19 @@ function getMatchingItem (productId) {
 }
 
 export function addToCart (productId) {
+    let quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
+    let selectedQuantity = Number(quantitySelector.value);
+
+
     let matchingItem = getMatchingItem(productId);
     
     if(matchingItem) {
-        matchingItem.quantity ++;
+        matchingItem.quantity += selectedQuantity;
     }
     else {
         cart.push({
             productId,
-            quantity: 1
+            quantity: selectedQuantity
         })
     }
 
