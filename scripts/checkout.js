@@ -1,10 +1,10 @@
 import {cart, calculateCartQuantity,  getMatchingProduct, deleteCartItem} from "../data/cart.js"
 import {formatCurrency} from "../data/utils/money.js"
 
-generateCheckoutHeader();
+renderCheckoutHeader();
 renderCartItemsHtml();
 
-function generateCheckoutHeader() {
+function renderCheckoutHeader() {
     const headerHtml = `
         <div class="header-content">
         <div class="checkout-header-left-section">
@@ -118,6 +118,8 @@ function renderCartItemsHtml () {
                 const {productId} = deletLink.dataset;
 
                 deleteCartItem(productId);
+                renderCheckoutHeader();
+
                 
                 const container = document.querySelector(`.js-cart-item-container-${productId}`);
                 container.remove();
