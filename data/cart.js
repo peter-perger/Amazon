@@ -63,6 +63,20 @@ export function addToCart (productId) {
     saveCart();
 }
 
+export function deleteCartItem(productId) {
+    let newCart = [];
+
+    cart.forEach((cartItem) => {
+        
+        if(productId !== cartItem.productId) {
+            newCart.push(cartItem)
+        }
+    })
+
+    cart = newCart;
+    saveCart();
+}
+
 export function saveCart() {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
