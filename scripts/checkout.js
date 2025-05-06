@@ -1,10 +1,11 @@
-import {cart, calculateCartQuantity,  getMatchingProduct, deleteCartItem} from "../data/cart.js"
-import {formatCurrency} from "../data/utils/money.js"
+import {cart, calculateCartQuantity, getMatchingItem, getMatchingProduct, deleteCartItem} from "../data/cart.js";
+import {formatCurrency} from "../data/utils/money.js";
+import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 
-renderCheckoutHeader();
+renderCheckoutHeaderHtml();
 renderCartItemsHtml();
 
-function renderCheckoutHeader() {
+function renderCheckoutHeaderHtml() {
     const headerHtml = `
         <div class="header-content">
         <div class="checkout-header-left-section">
@@ -48,14 +49,22 @@ function renderCartItemsHtml () {
                 <div class="product-name">${matchingProduct.name}</div>
                 <div class="product-price">$${formatCurrency(matchingProduct.priceCents)}</div>
                 <div class="product-quantity">
-                    <span>
+                    <span class="quantity-display">
                         Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                     </span>
-                    <span class="update-quantity-link link-primary">
+                    <span class="update-quantity-link js-update-quantity-link link-primary" 
+                          data-product-id="${productId}">
                         Update
                     </span>
+
+                    <input class="quantity-input js-quantity-input-${productId}"
+                           data-product-id=${productId}>
+                    <span class="save-quantity-link js-save-quantity-link link-primary"
+                          data-product-id=${productId}> Save 
+                    </span> 
+
                     <span class="delete-quantity-link js-delete-link link-primary"
-                          data-product-id="${matchingProduct.id}">
+                          data-product-id=${productId}>
                         Delete
                     </span>
                 </div>
@@ -113,18 +122,57 @@ function renderCartItemsHtml () {
     document.querySelector('.js-order-summary').innerHTML = cartItemHtml;
 
     document.querySelectorAll('.js-delete-link')
-        .forEach((deletLink) => {
-            deletLink.addEventListener('click', () => {
-                const {productId} = deletLink.dataset;
+        .forEach((deleteButton) => {
+            deleteButton.addEventListener('click', () => {
+                const {productId} = deleteButton.dataset;
 
                 deleteCartItem(productId);
-                renderCheckoutHeader();
+                renderCheckoutHeaderHtml();
+            })
+        })
+    
+    document.querySelectorAll('.js-update-quantity-link')
+        .forEach((updateButton) => {
+            updateButton.addEventListener('click', () => {
+                const {productId} = updateButton.dataset;
 
-                
                 const container = document.querySelector(`.js-cart-item-container-${productId}`);
-                container.remove();
+                container.classList.add('is-editing-quantity');
+            })
+        })
+
+    document.querySelectorAll('.js-save-quantity-link')
+        .forEach((saveButton) => {
+            saveButton.addEventListener('click', () => {
+                const {productId} = saveButton.dataset;
+
+                const container = document.querySelector(`.js-cart-item-container-${productId}`);
+                container.classList.remove('is-editing-quantity');
+
+                const newQuantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+                
+                const matchingItem = getMatchingItem(productId);
+                
+                if(newQuantity < 0) {
+                    alert('New quantity can\'t be less than 0');
+                }
+                else if(newQuantity === 0) {
+                    deleteCartItem(productId);
+                }
+                else if(newQuantity > 25) {
+                    alert('New quantity can\'t be more than 25');
+                }
+                else {
+                    matchingItem.quantity = newQuantity;
+                }
+
+                renderCartItemsHtml();
+                renderCheckoutHeaderHtml();
             })
         })
 }
+
+const today= dayjs();
+console.log(today);
 
 
