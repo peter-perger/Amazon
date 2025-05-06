@@ -1,7 +1,32 @@
-import {cart, getMatchingProduct} from "../data/cart.js"
+import {cart, calculateCartQuantity,  getMatchingProduct, deleteCartItem} from "../data/cart.js"
 import {formatCurrency} from "../data/utils/money.js"
 
+generateCheckoutHeader();
 renderCartItemsHtml();
+
+function generateCheckoutHeader() {
+    const headerHtml = `
+        <div class="header-content">
+        <div class="checkout-header-left-section">
+          <a href="amazon.html">
+            <img class="amazon-logo" src="images/amazon-logo.png">
+            <img class="amazon-mobile-logo" src="images/amazon-mobile-logo.png">
+          </a>
+        </div>
+
+        <div class="checkout-header-middle-section">
+          Checkout (<a class="return-to-home-link"
+            href="amazon.html">${calculateCartQuantity()} items</a>)
+        </div>
+
+        <div class="checkout-header-right-section">
+          <img src="images/icons/checkout-lock-icon.png">
+        </div>
+      </div>
+    `
+
+    document.querySelector('.js-checkout-header').innerHTML = headerHtml;
+}
 
 function renderCartItemsHtml () {
     let cartItemHtml = ``;
@@ -11,7 +36,7 @@ function renderCartItemsHtml () {
     const matchingProduct = getMatchingProduct(productId);
     
     cartItemHtml += `
-        <div class="cart-item-container">
+        <div class="cart-item-container js-cart-item-container-${productId}">
             <div class="delivery-date">
                 Delivery date: Tuesday, June 21
             </div>
@@ -29,7 +54,8 @@ function renderCartItemsHtml () {
                     <span class="update-quantity-link link-primary">
                         Update
                     </span>
-                    <span class="delete-quantity-link link-primary">
+                    <span class="delete-quantity-link js-delete-link link-primary"
+                          data-product-id="${matchingProduct.id}">
                         Delete
                     </span>
                 </div>
@@ -85,6 +111,18 @@ function renderCartItemsHtml () {
     })
 
     document.querySelector('.js-order-summary').innerHTML = cartItemHtml;
+
+    document.querySelectorAll('.js-delete-link')
+        .forEach((deletLink) => {
+            deletLink.addEventListener('click', () => {
+                const {productId} = deletLink.dataset;
+
+                deleteCartItem(productId);
+                
+                const container = document.querySelector(`.js-cart-item-container-${productId}`);
+                container.remove();
+            })
+        })
 }
 
 
