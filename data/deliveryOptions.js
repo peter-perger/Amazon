@@ -23,7 +23,7 @@ export function getDeliveryOption(deliveryId) {
         }
     })
 
-    return resultOption;
+    return resultOption || deliveryOptions[0];
 }
 
 export function updateDeliveryOption (productId, optionId) {
