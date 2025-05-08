@@ -1,36 +1,12 @@
-import {cart, calculateCartQuantity, getMatchingItem, getMatchingProduct, deleteCartItem} from "../../data/cart.js";
+import { cart, getMatchingItem, getMatchingProduct, deleteCartItem } from "../../data/cart.js";
 import { deliveryOptions, getDeliveryOption, updateDeliveryOption } from "../../data/deliveryOptions.js";
-import { renderPaymentSummaryHtml } from "./paymentSummary.js";
-import {formatCurrency} from "../../data/utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
+import { renderPaymentSummaryHtml } from "./paymentSummary.js";
+import { renderCheckoutHeaderHtml } from "./checkoutHeader.js";
+import {formatCurrency} from "../../data/utils/money.js";
 
-renderCheckoutHeaderHtml();
 renderCartItemsHtml();
 renderPaymentSummaryHtml();
-
-function renderCheckoutHeaderHtml() {
-    const headerHtml = `
-        <div class="header-content">
-        <div class="checkout-header-left-section">
-          <a href="amazon.html">
-            <img class="amazon-logo" src="images/amazon-logo.png">
-            <img class="amazon-mobile-logo" src="images/amazon-mobile-logo.png">
-          </a>
-        </div>
-
-        <div class="checkout-header-middle-section">
-          Checkout (<a class="return-to-home-link"
-            href="amazon.html">${calculateCartQuantity()} items</a>)
-        </div>
-
-        <div class="checkout-header-right-section">
-          <img src="images/icons/checkout-lock-icon.png">
-        </div>
-      </div>
-    `
-
-    document.querySelector('.js-checkout-header').innerHTML = headerHtml;
-}
 
 export function renderCartItemsHtml () {
     let cartItemHtml = ``;
