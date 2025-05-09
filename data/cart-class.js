@@ -2,15 +2,15 @@ import { products } from "../data/products.js";
 
 class Cart {
     cartItems;
-    localStorageKey;
+    #localStorageKey; //private property
 
-    constructor(storageKey) {
-        this.localStorageKey = storageKey;
-        this.loadFromStorage();
+    constructor(localStorageKey) {
+        this.#localStorageKey = localStorageKey;
+        this.#loadFromStorage();
     }
 
-    loadFromStorage() {
-        this.cartItems = JSON.parse(localStorage.getItem(this.localstorageKey));
+    #loadFromStorage() {
+        this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
     
         if(!this.cartItems) {
             this.cartItems = [{
@@ -26,7 +26,7 @@ class Cart {
     };
 
     saveCart() {
-        localStorage.setItem(this.localstorageKey, JSON.stringify(this.cartItems));
+        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
     };
 
     getMatchingItem (productId) {
@@ -106,8 +106,7 @@ class Cart {
 const cart = new Cart('cart-oop');
 const businessCart = new Cart('cart-business');
 
-
-
+cart.addToCart("36c64692-677f-4f58-b5ec-0dc2cf109e27");
 
 
 console.log(cart);
