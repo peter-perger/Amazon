@@ -1,6 +1,6 @@
 import { calculateCartQuantity, addToCart} from "../data/cart.js"
 import { products } from "../data/products.js";
-import { formatCurrency } from "../data/utils/money.js";
+
 
 renderHeaderHtml();
 renderProductsHtml();
@@ -80,6 +80,8 @@ function renderProductsHtml () {
                         <option value="10">10</option>
                     </select>
                 </div>
+
+                ${product.extraInfoHtml()}
 
                 <div class="product-spacer"></div>
 

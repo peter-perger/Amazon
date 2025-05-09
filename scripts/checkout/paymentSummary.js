@@ -1,6 +1,6 @@
 import { cart, getMatchingProduct, calculateCartQuantity } from "../../data/cart.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
-import { formatCurrency } from "../../data/utils/money.js";
+import { formatCurrency } from "../../utils/money.js";
 
 export function renderPaymentSummaryHtml() {
     let productPriceCents = 0;
