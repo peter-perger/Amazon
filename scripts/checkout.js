@@ -1,15 +1,35 @@
 import { renderCheckoutHeaderHtml } from "./checkout/checkoutHeader.js";
 import { renderCartItemsHtml } from "./checkout/orderSummary.js";
 import { renderPaymentSummaryHtml } from "./checkout/paymentSummary.js";
-import { loadProducts, loadProductsFetch } from "../data/products.js";
+import { loadProductsFetch } from "../data/products.js";
 import { loadCart } from "../data/products.js";
 
+
+//async makes a function return a promise
+
+async function loadPage () {
+    //await wait a promise to finish before going next line -- let us write asynchronous code like normal code
+    await loadProductsFetch();
+
+    await new Promise((resolve) => {
+            loadCart(() => {
+                resolve();
+            });
+        });
+
+    renderCartItemsHtml();
+    renderPaymentSummaryHtml();
+    renderCheckoutHeaderHtml(); 
+}
+
+loadPage();
+
+/*
 //Promise class always comes with a function and when we create one,
 //it runs its inner function inmediately
-
 Promise.all([
     loadProductsFetch(),
-    
+
     new Promise((resolve) => {
             loadCart(() => {
                 resolve();
@@ -22,6 +42,7 @@ Promise.all([
         renderPaymentSummaryHtml();
         renderCheckoutHeaderHtml(); 
     });
+*/
 
 /*
 new Promise((resolve) => {
