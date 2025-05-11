@@ -5,9 +5,6 @@ import { renderPaymentSummaryHtml } from "./paymentSummary.js";
 import { renderCheckoutHeaderHtml } from "./checkoutHeader.js";
 import {formatCurrency} from "../../utils/money.js";
 
-renderCartItemsHtml();
-renderPaymentSummaryHtml();
-
 export function renderCartItemsHtml () {
     let cartItemHtml = ``;
 
