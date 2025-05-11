@@ -8,14 +8,21 @@ import { loadCart } from "../data/products.js";
 //async makes a function return a promise
 
 async function loadPage () {
-    //await wait a promise to finish before going next line -- let us write asynchronous code like normal code
-    await loadProductsFetch();
+    try {
+        //throw('error1');
 
-    await new Promise((resolve) => {
+        //await wait a promise to finish before going next line -- let us write asynchronous code like normal code
+        await loadProductsFetch();
+
+        await new Promise((resolve) => {
             loadCart(() => {
                 resolve();
             });
         });
+
+    } catch (error) {
+        console.log('Unexpected error. PLease try again later.')
+    }
 
     renderCartItemsHtml();
     renderPaymentSummaryHtml();
