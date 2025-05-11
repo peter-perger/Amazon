@@ -1,19 +1,15 @@
 import { renderCheckoutHeaderHtml } from "./checkout/checkoutHeader.js";
 import { renderCartItemsHtml } from "./checkout/orderSummary.js";
 import { renderPaymentSummaryHtml } from "./checkout/paymentSummary.js";
-import { loadProducts } from "../data/products.js";
+import { loadProducts, loadProductsFetch } from "../data/products.js";
 import { loadCart } from "../data/products.js";
 
 //Promise class always comes with a function and when we create one,
 //it runs its inner function inmediately
 
 Promise.all([
-    new Promise((resolve) => {
-    loadProducts(() => {
-        resolve('value1');
-        });
-    }),
-
+    loadProductsFetch(),
+    
     new Promise((resolve) => {
             loadCart(() => {
                 resolve();
