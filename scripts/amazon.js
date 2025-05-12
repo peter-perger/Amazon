@@ -10,42 +10,61 @@ function renderProductsGrid() {
     function renderHeaderHtml () {
         document.querySelector('.js-amazon-header')
             .innerHTML = `
-            <div class="amazon-header-left-section">
-                <a href="amazon.html" class="header-link">
-                <img class="amazon-logo"
-                    src="images/amazon-logo-white.png">
-                <img class="amazon-mobile-logo"
-                    src="images/amazon-mobile-logo-white.png">
-                </a>
-            </div>
+                <div class="amazon-header-left-section">
+                    <a href="amazon.html" class="header-link">
+                    <img class="amazon-logo"
+                        src="images/amazon-logo-white.png">
+                    <img class="amazon-mobile-logo"
+                        src="images/amazon-mobile-logo-white.png">
+                    </a>
+                </div>
 
-            <div class="amazon-header-middle-section">
-                <input class="search-bar" type="text" placeholder="Search">
+                <div class="amazon-header-middle-section">
+                    <input class="search-bar js-search-bar" type="text" placeholder="Search">
 
-                <button class="search-button">
-                    <img class="search-icon" src="images/icons/search-icon.png">
-                </button>
-            </div>
+                    <button class="search-button js-search-button">
+                        <img class="search-icon" src="images/icons/search-icon.png">
+                    </button>
+                </div>
 
-            <div class="amazon-header-right-section">
-                <a class="orders-link header-link" href="orders.html">
-                    <span class="returns-text">Returns</span>
-                    <span class="orders-text">& Orders</span>
-                </a>
+                <div class="amazon-header-right-section">
+                    <a class="orders-link header-link" href="orders.html">
+                        <span class="returns-text">Returns</span>
+                        <span class="orders-text">& Orders</span>
+                    </a>
 
-                <a class="cart-link header-link" href="checkout.html">
-                    <img class="cart-icon" src="images/icons/cart-icon.png">
-                        <div class="cart-quantity">${calculateCartQuantity()}</div>
-                    <div class="cart-text">Cart</div>
-                </a>
-            </div>
+                    <a class="cart-link header-link" href="checkout.html">
+                        <img class="cart-icon" src="images/icons/cart-icon.png">
+                            <div class="cart-quantity">${calculateCartQuantity()}</div>
+                        <div class="cart-text">Cart</div>
+                    </a>
+                </div>
             `    
     }
 
     function renderProductsHtml () {
         let productsHtml = ``;
 
-        products.forEach((product) => {
+        const url = new URL(window.location.href);
+        const search = url.searchParams.get('search');
+
+        let filteredProducts = products;
+        
+        if (search) {
+            filteredProducts = products.filter((product) => {
+                let matchingKeyword = false;
+
+                product.keywords.forEach((keyword)=> {
+                    if (keyword.toLowerCase().includes(search.toLowerCase())) {
+                        matchingKeyword = true;
+                    }
+                })
+
+                return matchingKeyword || product.name.toLowerCase().includes(search.toLowerCase());
+            });
+        }
+        
+        filteredProducts.forEach((product) => {
             productsHtml += `
                 <div class="product-container">
                     <div class="product-image-container">
@@ -129,6 +148,12 @@ function renderProductsGrid() {
                     addToCart(productId);
                     renderHeaderHtml();
                 })
+            })
+
+        document.querySelector('.js-search-button')
+            .addEventListener('click', () => {
+                const search = document.querySelector('.js-search-bar').value;
+                window.location.href = `amazon.html?search=${search}`;
             })
     }
 }

@@ -2,7 +2,7 @@ import { products } from "../data/products.js";
 
 class Cart {
     cartItems;
-    #localStorageKey; //private property
+    #localStorageKey;
 
     constructor(localStorageKey) {
         this.#localStorageKey = localStorageKey;
@@ -108,9 +108,6 @@ const businessCart = new Cart('cart-business');
 
 cart.addToCart("36c64692-677f-4f58-b5ec-0dc2cf109e27");
 
-
-console.log(cart);
-console.log(businessCart);
 
 
 

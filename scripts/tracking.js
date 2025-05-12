@@ -13,8 +13,6 @@ async function loadPage() {
   const order = getOrder(orderId);
   const product = getMatchingProduct(productId);
 
-  // Get additional details about the product like
-  // the estimated delivery time.
   let productDetails;
   order.products.forEach((details) => {
     if (details.productId === product.id) {
