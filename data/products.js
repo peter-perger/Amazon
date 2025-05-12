@@ -78,7 +78,7 @@ loadProductsFetch().then(() => {
 });
 */
 
-export function loadProducts () {
+export function loadProducts (fun) {
   const xhr = new XMLHttpRequest;
 
   xhr.addEventListener('load', () => {
@@ -92,6 +92,8 @@ export function loadProducts () {
       });
 
       console.log('load products');
+
+      fun();
   });
   
   xhr.addEventListener('error', () => {

@@ -2,23 +2,19 @@ import { renderCheckoutHeaderHtml } from "./checkout/checkoutHeader.js";
 import { renderCartItemsHtml } from "./checkout/orderSummary.js";
 import { renderPaymentSummaryHtml } from "./checkout/paymentSummary.js";
 import { loadProductsFetch } from "../data/products.js";
-import { loadCart } from "../data/products.js";
+import { loadCartFetch } from "../data/cart.js";
 
 
 //async makes a function return a promise
-
 async function loadPage () {
     try {
         //throw('error1');
 
         //await wait a promise to finish before going next line -- let us write asynchronous code like normal code
-        await loadProductsFetch();
-
-        await new Promise((resolve) => {
-            loadCart(() => {
-                resolve();
-            });
-        });
+        await  Promise.all([
+            loadProductsFetch(),
+            loadCartFetch()
+        ])
 
     } catch (error) {
         console.log('Unexpected error. PLease try again later.')

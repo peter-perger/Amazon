@@ -9,7 +9,7 @@ export let cart = JSON.parse(localStorage.getItem('cart')) || [{
         quantity: 2,
         deliveryId: 2
         }
-    ]
+]
 
 export function calculateCartQuantity() {
     let quantity = 0;
@@ -87,4 +87,10 @@ export function saveCart() {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
+export async function loadCartFetch() {
+    const response = await fetch('https://supersimplebackend.dev/cart');
+    const text = await response.text();
+    console.log(text);
+    return text;
+}
 
