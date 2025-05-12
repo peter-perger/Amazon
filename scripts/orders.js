@@ -42,6 +42,11 @@ async function loadPage() {
   function productsListHTML(order) {
     let productsListHTML = '';
 
+    if(!Array.isArray(order.products)) {
+      console.warn(`Missing or invalid products for order ID: ${order.id}`, order);
+      return productsListHTML;
+    }
+
     order.products.forEach((productDetails) => {
       const product = getMatchingProduct(productDetails.productId);
 
@@ -94,5 +99,12 @@ async function loadPage() {
       `;
     }, 1000);
     });
+
+  document.querySelector('.js-search-button')
+      .addEventListener('click', () => {
+          const search = document.querySelector('.js-search-bar').value;
+          window.location.href = `amazon.html?search=${search}`;
+      })  
+  
 });
 }
